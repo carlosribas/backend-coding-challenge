@@ -28,11 +28,11 @@ I changed some lines from the api.py file to work with python 3.6. I am still wo
 - Dynamic updates?
 
 #### Instalation
-1) Create the virtualenv (I' using python 3.6):
+1) Create the virtualenv (I'm using python 3.6):
 ```
 mkdir challenge
 cd challenge
-virtualenv --python=3.6  env
+virtualenv --python=python3.6  env
 source env/bin/activate
 ```
 
