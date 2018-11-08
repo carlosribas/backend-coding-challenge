@@ -28,24 +28,23 @@ I changed some lines from the api.py file to work with python 3.6. I am still wo
 - Dynamic updates?
 
 #### Instalation
-1) Create the virtualenv (I'm using python 3.6):
+
+1) Clone my repository:
 ```
-mkdir challenge
-cd challenge
+git clone https://github.com/carlosribas/backend-coding-challenge.git
+```
+
+2) Create the virtualenv (I'm using python 3.6):
+```
+cd backend-coding-challenge
 virtualenv --python=python3.6  env
 source env/bin/activate
 ```
-
-2) Clone my repository:
-```
-git clone https://github.com/carlosribas/backend-coding-challenge.git
-``` 
 
 3) Install packages:
 
 To get started, install Postgres and Redis on your local computer. I installed using [Postgres.app](https://postgresapp.com/) and `brew install redis` in my Mac OS. The other necessary packages can be installed with:
 ```
-cd backend-coding-challenge
 pip install -r requirements.txt
 ``` 
 
@@ -83,9 +82,8 @@ redis-server
 
 8) In another terminal window, start a worker process to listen for queued tasks:
 ```
-cd challenge/env
-source bin/activate
 cd backend-coding-challenge
+source env/bin/activate
 python worker.py
 ``` 
 
