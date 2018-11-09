@@ -42,7 +42,7 @@ class ChallengeTestCase(unittest.TestCase):
         response = tester.get('/')
         self.assertIn(b'Testing', response.data)
 
-    def test_home_translation_done(self):
+    def test_home_get_translation_done(self):
         translation = Translator(
             text='All right',
             text_translated='Todo bien',
@@ -54,7 +54,15 @@ class ChallengeTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/')
         self.assertIn(b'Todo bien', response.data)
-        self.assertCountEqual(Translator.query.filter_by(text_translated=None).all(), [])
+
+    @patch('routes.post_translation')
+    def test_create_translation(self, mock_uid):
+        mock_uid.return_value.uid = '0987654321'
+        translation = Translator(text='Hello', status='requested')
+        db.session.add(translation)
+        db.session.commit()
+        create_translation(translation.id, translation.text)
+        self.assertEqual(translation.uid, '0987654321')
 
 
 if __name__ == '__main__':
