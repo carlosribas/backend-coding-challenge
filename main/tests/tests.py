@@ -10,7 +10,7 @@ class ChallengeTestCase(unittest.TestCase):
         app.config.from_object(TestingConfig)
         db.create_all()
 
-        self.fake_queue = patch('routes.translation_queue')
+        self.fake_queue = patch('main.routes.translation_queue')
         self.fake_queue.start()
 
     def tearDown(self):
@@ -41,6 +41,7 @@ class ChallengeTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/')
         self.assertIn(b'Testing', response.data)
+        self.assertEqual(translation.__repr__(), "<Text " + "'" + translation.text + "'>")
 
     def test_home_get_translation_done(self):
         translation = Translator(
@@ -55,7 +56,7 @@ class ChallengeTestCase(unittest.TestCase):
         response = tester.get('/')
         self.assertIn(b'Todo bien', response.data)
 
-    @patch('routes.post_translation')
+    @patch('main.routes.post_translation')
     def test_create_translation(self, mock_uid):
         mock_uid.return_value.uid = '0987654321'
         translation = Translator(text='Hello', status='requested')
@@ -64,7 +65,7 @@ class ChallengeTestCase(unittest.TestCase):
         create_translation(translation.id, translation.text)
         self.assertEqual(translation.uid, '0987654321')
 
-    @patch('routes.get_translation')
+    @patch('main.routes.get_translation')
     @patch('time.sleep')
     def test_update_translation_completed(self, mock_time, mock_get_translation):
         mock_time.return_value = None

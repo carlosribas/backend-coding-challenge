@@ -1,8 +1,8 @@
 import time
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from forms import TranslatorForm
-from models import Translator
+from .forms import TranslatorForm
+from .models import Translator
 from unbabel_api import post_translation, get_translation
 from sqlalchemy.sql.expression import func
 from rq import Queue
