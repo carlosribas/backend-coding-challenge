@@ -78,6 +78,21 @@ class ChallengeTestCase(unittest.TestCase):
         self.assertEqual(translation.status, 'translated')
         self.assertIsNotNone(translation.text_translated)
 
+    @patch('main.routes.get_translation')
+    @patch('time.sleep')
+    def test_update_translation_pending(self, mock_time, mock_get_translation):
+        mock_time.return_value = None
+        mock_get_translation.side_effect = [
+            unittest.mock.Mock(status='new'),
+            unittest.mock.Mock(status='translating'),
+            unittest.mock.Mock(status='completed', translation='¿Estas bien?')
+        ]
+        translation = Translator(text='Are you ok?', status='new', uid='6789012345')
+        db.session.add(translation)
+        db.session.commit()
+        update_translation(translation.id)
+        self.assertEqual(translation.status, 'translated')
+
 
 if __name__ == '__main__':
     unittest.main()
