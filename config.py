@@ -9,10 +9,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.environ['SECRET_KEY']
-
-
-class ProductionConfig(Config):
-    DEBUG = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(Config):
