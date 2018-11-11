@@ -61,10 +61,9 @@ def home():
         db.session.commit()
 
         #: Delay execution of create_translation
-        new_request = translation_queue.enqueue_call(create_translation, args=(new_text.id, new_text.text,))
-
-        # Delay execution of update_translation. This job will be queued when "new_request" is completed
-        translation_queue.enqueue(update_translation, args=(new_text.id,), depends_on=new_request)
+        new_request = translation_queue.enqueue_call(create_translation, args=(new_text.id, new_text.text))
+        # Delay execution of update_translation. This job will be queued when the "new_request" is completed
+        translation_queue.enqueue(update_translation, args=new_text.id, depends_on=new_request)
 
         flash('Your text will be translated. Please wait.', 'success')
         return redirect(url_for('home'))
