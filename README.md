@@ -21,11 +21,7 @@
 
 ## About my code
 
-I changed some lines from the api.py file to work with python 3.6. I am still working on this challenge, but this version already works. Features missing: 
-
-- Scalable application
-- More mock tests 
-- Dynamic updates?
+I am using unbabel-py package, but to use it with python 3.6, I had to change a few lines in the api.py file.
 
 #### Instalation
 
@@ -43,7 +39,7 @@ source env/bin/activate
 
 3) Install packages:
 
-To get started, install Postgres and Redis on your local computer. I installed using [Postgres.app](https://postgresapp.com/) and `brew install redis` in my Mac OS. The other necessary packages can be installed with:
+To get started, install Postgres and Redis on your local computer. I installed them using [Postgres.app](https://postgresapp.com/) and `brew install redis` in my Mac OS. The other necessary packages can be installed with:
 ```
 pip install -r requirements.txt
 ``` 
@@ -60,6 +56,7 @@ CREATE DATABASE
 
 5) Create a .env file with:
 ```
+FLASK_ENV=development
 SECRET_KEY="your-secret-key"
 APP_SETTINGS="config.DevelopmentConfig"
 DATABASE_URL="postgresql://localhost/db_name"
@@ -87,10 +84,24 @@ source env/bin/activate
 python worker.py
 ``` 
 
-9) Access http://localhost:5000 on your browser.
+9) Run `python app.py` and access http://localhost:5000 on your browser.
 
 #### Testing
 
 ```
-python -m unittest tests/tests.py
+python -m unittest main/tests/tests.py
+```
+
+Coverage report info:
+
+```
+(env) MacBook-Air-de-Carlos:backend-coding-challenge ribas$ coverage report
+Name               Stmts   Miss  Cover
+--------------------------------------
+main/__init__.py       0      0   100%
+main/forms.py          6      0   100%
+main/models.py         9      0   100%
+main/routes.py        41      0   100%
+--------------------------------------
+TOTAL                 56      0   100%
 ```
