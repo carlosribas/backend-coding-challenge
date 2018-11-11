@@ -1,7 +1,10 @@
 import unittest
-from unittest.mock import patch
-from app import *
+
+from app import app, db
 from config import TestingConfig
+from main.models import Translator
+from main.routes import create_translation, update_translation
+from unittest.mock import patch
 
 
 class ChallengeTestCase(unittest.TestCase):
@@ -10,11 +13,7 @@ class ChallengeTestCase(unittest.TestCase):
         app.config.from_object(TestingConfig)
         db.create_all()
 
-        self.fake_queue = patch('main.routes.translation_queue')
-        self.fake_queue.start()
-
     def tearDown(self):
-        self.fake_queue.stop()
         db.session.remove()
         db.drop_all()
 
@@ -27,12 +26,6 @@ class ChallengeTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/')
         self.assertIn(b'Unbabel Backend Challenge', response.data)
-
-    def test_home_post_translation(self):
-        tester = app.test_client(self)
-        data = {'text': 'Hello'}
-        response = tester.post('/', data=data)
-        self.assertEqual(response.status_code, 302)
 
     def test_home_get_translation(self):
         translation = Translator(text='Testing', uid='123456789', status='requested')
@@ -55,6 +48,14 @@ class ChallengeTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/')
         self.assertIn(b'Todo bien', response.data)
+
+    @patch('main.routes.translation_queue')
+    def test_home_post_translation(self, mock_queue):
+        mock_queue.return_value = None
+        tester = app.test_client(self)
+        data = {'text': 'Hello'}
+        response = tester.post('/', data=data)
+        self.assertEqual(response.status_code, 302)
 
     @patch('main.routes.post_translation')
     def test_create_translation(self, mock_uid):
