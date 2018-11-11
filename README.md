@@ -68,7 +68,6 @@ REDIS_URL="redis://localhost:6379"
  
 6) Create table:
 ```
-python manage.py db migrate
 python manage.py db upgrade
 ``` 
 
