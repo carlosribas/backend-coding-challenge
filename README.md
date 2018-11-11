@@ -30,7 +30,7 @@ I am using unbabel-py package, but to use it with python 3.6, I had to change a 
 git clone https://github.com/carlosribas/backend-coding-challenge.git
 ```
 
-2) Create the virtualenv (I'm using python 3.6):
+2) Create the virtualenv:
 ```
 cd backend-coding-challenge
 virtualenv --python=python3.6  env
